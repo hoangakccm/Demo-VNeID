@@ -90,7 +90,7 @@
             <div class="name">${C.fullName}</div>
             <div class="phone">${C.maskedPhone}</div>
           </div>
-          ${appMark(64)}
+          ${appMark(46)}
         </div>
 
         <div class="label">Mật khẩu</div>
@@ -136,8 +136,9 @@
       e.preventDefault();
       if (!pw.value) { toast('Vui lòng nhập mật khẩu'); pw.focus(); return; }
       pw.value = '';
-      setLoggedIn(true);
-      go('#/home');
+      const btn = app.querySelector('.btn-primary');
+      btn.classList.add('loading');
+      setTimeout(() => { setLoggedIn(true); go('#/home'); }, 650);
     });
     const acts = {
       faceid: () => { toast('Đang xác thực (mô phỏng)…'); setTimeout(() => { setLoggedIn(true); go('#/home'); }, 700); },
@@ -216,8 +217,8 @@
 
         <div class="section"><div class="section__head"><h2 class="section__title">Nhóm dịch vụ</h2></div></div>
         <div class="services">
-          ${services.map(([label, icon, isNew]) => `
-            <button class="service" data-demo="${label}">
+          ${services.map(([label, icon, isNew], i) => `
+            <button class="service" data-demo="${label}" style="animation-delay:${i*50}ms">
               <span class="service__icon">${icon}${isNew ? '<span class="badge-new">Mới</span>' : ''}</span>
               <span class="service__label">${label}</span>
             </button>`).join('')}
@@ -232,7 +233,7 @@
           <span class="org-card__switch">${I.swap}</span>
         </button>
 
-        <button class="banner" data-demo="Khám phá ngay" style="width:calc(100% - 36px);text-align:left">
+        <button class="banner" data-demo="Khám phá ngay" style="width:calc(100% - 28px);text-align:left">
           <svg class="banner__rays" viewBox="0 0 400 180" preserveAspectRatio="none">
             ${Array.from({ length: 14 }, (_, i) => `<path d="M90 120 L${i * 32} -10 L${i * 32 + 12} -10 Z" fill="#ffcf6b"/>`).join('')}
           </svg>
@@ -251,8 +252,8 @@
           </div>
         </div>
         <div class="favs">
-          ${favs.map(([label, art]) => `
-            <button class="fav" data-demo="${label}">
+          ${favs.map(([label, art], i) => `
+            <button class="fav" data-demo="${label}" style="animation-delay:${150+i*50}ms">
               <span class="fav__icon">${art}</span>
               <span>${label}</span>
             </button>`).join('')}
@@ -330,8 +331,18 @@
     if (name !== 'login' && !isLoggedIn()) return go('#/login');
     if (name === 'login' && isLoggedIn()) return go('#/home');
     (routes[name] || renderLogin)();
+    document.body.classList.toggle('on-login', name === 'login');
+    app.firstElementChild && app.firstElementChild.classList.add('screen-enter');
     window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', route);
   route();
+
+  // Splash screen on launch
+  const splash = document.createElement('div');
+  splash.className = 'splash';
+  splash.innerHTML = `<div class="splash__inner"><div class="splash__mark">${appMark(96)}</div>
+    <div class="splash__title">VNeID Demo</div><div class="splash__sub">Hình ảnh minh họa</div></div>`;
+  document.body.appendChild(splash);
+  setTimeout(() => { splash.classList.add('hide'); setTimeout(() => splash.remove(), 500); }, 1100);
 })();
