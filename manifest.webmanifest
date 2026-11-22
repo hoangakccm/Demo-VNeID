@@ -1,0 +1,17 @@
+{
+  "name": "VNeID Demo",
+  "short_name": "VNeID Demo",
+  "description": "Bản demo giao diện (không phải ứng dụng chính thức, không có giá trị pháp lý)",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#b71c1c",
+  "theme_color": "#b71c1c",
+  "lang": "vi",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
