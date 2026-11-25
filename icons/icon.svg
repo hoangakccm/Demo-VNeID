@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d32f2f"/><stop offset="1" stop-color="#a3151a"/></linearGradient></defs><rect width="512" height="512" fill="url(#bg)"/>
+    
+  <rect x="166" y="52" width="180" height="300" rx="44" fill="#fff"/>
+  <rect x="182" y="68" width="148" height="268" rx="30" fill="#fff6ea"/>
+  <rect x="222" y="68" width="68" height="16" rx="8" fill="#26201f"/>
+  
+      <rect x="186" y="96" width="140" height="28" rx="8" fill="#d32f2f"/>
+      <rect x="186" y="138" width="140" height="74" rx="12" fill="#f2c94c"/>
+      <rect x="186" y="228" width="92" height="12" rx="6" fill="#e3d6cc"/>
+      <rect x="186" y="250" width="124" height="12" rx="6" fill="#e3d6cc"/>
+      <circle cx="206" cy="298" r="14" fill="#f0c9c9"/><circle cx="256" cy="298" r="14" fill="#f0c9c9"/><circle cx="306" cy="298" r="14" fill="#f0c9c9"/>
+    <text x="256" y="432" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="62" letter-spacing="4" fill="#fff">MOCKUP</text></svg>
