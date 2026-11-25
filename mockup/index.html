@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup Banner</title>
+  <meta name="description" content="Tải ảnh banner lên, tự động ghép vào màn hình Trang chủ mẫu để xem trước.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #d71920; --red-dark: #a3151a;
+      --bg: #f6f3ef; --card: #ffffff; --text: #26201f; --muted: #7b7270;
+      --line: #e6dfda; --soft: #fbeeee;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; color: inherit; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 16px 64px; }
+    header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -.3px; }
+    h1 span { color: var(--red); }
+    .sub { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+    .layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+    .panel + .panel { margin-top: 16px; }
+    .panel h2 { margin: 0 0 12px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+
+    .drop {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center;
+      border: 2px dashed #e3b9b9; background: var(--soft); border-radius: 14px; padding: 26px 14px; cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .drop:hover, .drop.over { border-color: var(--red); background: #fde3e3; }
+    .drop svg { width: 38px; height: 38px; color: var(--red); }
+    .drop b { font-size: 15px; }
+    .drop small { color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 0; }
+    .field > label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; background: #f1ebe7; border-radius: 10px; padding: 3px; gap: 3px; }
+    .seg button { border: 0; background: transparent; border-radius: 8px; padding: 8px 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--muted); }
+    .seg button.on { background: #fff; color: var(--red); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    .hint { color: var(--muted); font-size: 12px; margin: 6px 0 0; line-height: 1.45; }
+    .swatches { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .sw { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line); cursor: pointer; padding: 0; }
+    .sw.on { box-shadow: 0 0 0 2px var(--red); }
+    .swatches input[type=color] { width: 34px; height: 34px; border: 0; padding: 0; background: none; cursor: pointer; }
+    .row { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+    .row input[type=checkbox] { accent-color: var(--red); width: 16px; height: 16px; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 700; font-size: 13.5px; cursor: pointer; text-decoration: none; }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-ghost { background: #f1ebe7; color: var(--text); }
+    .btn-ghost:hover { background: #e8e0db; }
+    .btn:disabled { opacity: .45; cursor: default; }
+    .tpl { display: flex; gap: 12px; align-items: center; }
+    .tpl img { width: 52px; border-radius: 8px; border: 1px solid var(--line); }
+    .tpl .meta { font-size: 12.5px; color: var(--muted); line-height: 1.5; flex: 1; }
+
+    .results-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .results-head h2 { margin: 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+    .card .shot { background: #efe9e5; display: flex; align-items: center; justify-content: center; padding: 14px; flex: 1; }
+    .card .shot img { width: 100%; height: auto; display: block; cursor: zoom-in; border-radius: 6px; }
+    .card .foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); }
+    .card .name { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+    .card .actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .icon-btn { width: 34px; height: 34px; border-radius: 9px; border: 0; background: #f1ebe7; cursor: pointer; display: grid; place-items: center; }
+    .icon-btn:hover { background: #e8e0db; }
+    .icon-btn svg { width: 17px; height: 17px; }
+
+    .empty { border: 1px dashed var(--line); border-radius: 16px; padding: 48px 20px; text-align: center; color: var(--muted); background: var(--card); }
+    .empty img { width: 150px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.12); margin-bottom: 14px; }
+    .err { background: #fff4e5; border: 1px solid #f3cf99; color: #7a4b00; border-radius: 12px; padding: 12px 14px; font-size: 13.5px; margin-bottom: 14px; display: none; }
+
+    .lightbox { position: fixed; inset: 0; background: rgba(20,14,14,.86); display: none; align-items: center; justify-content: center; z-index: 50; padding: 16px; cursor: zoom-out; }
+    .lightbox.on { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Mockup <span>Banner</span></h1>
+      <p class="sub">Tải ảnh banner lên — tự động ghép vào màn hình Trang chủ mẫu.</p>
+    </div>
+  </header>
+
+  <div class="err" id="err"></div>
+
+  <div class="layout">
+    <aside>
+      <div class="panel">
+        <h2>1. Ảnh banner</h2>
+        <label class="drop" id="drop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></svg>
+          <b>Chọn hoặc kéo thả ảnh vào đây</b>
+          <small>Có thể chọn nhiều ảnh cùng lúc<br>hoặc dán ảnh (Ctrl/⌘ + V)</small>
+          <input id="file" type="file" accept="image/*" multiple hidden>
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2>2. Tuỳ chọn</h2>
+        <div class="field">
+          <label>Cách đặt banner</label>
+          <div class="seg" data-opt="fit">
+            <button data-v="auto" class="on">Giữ tỉ lệ ảnh</button>
+            <button data-v="cover">Lấp đầy khung</button>
+          </div>
+          <p class="hint" id="fitHint"></p>
+        </div>
+        <div class="field">
+          <label>Kiểu xuất</label>
+          <div class="seg" data-opt="style">
+            <button data-v="frame" class="on">Khung điện thoại</button>
+            <button data-v="screen">Ảnh màn hình</button>
+          </div>
+        </div>
+        <div class="field" id="bgField">
+          <label>Màu nền</label>
+          <div class="swatches" id="swatches">
+            <button class="sw on" data-c="#f3eee9" style="background:#f3eee9" title="Kem"></button>
+            <button class="sw" data-c="#ffffff" style="background:#ffffff" title="Trắng"></button>
+            <button class="sw" data-c="#1d1a1a" style="background:#1d1a1a" title="Đen"></button>
+            <button class="sw" data-c="#b3151c" style="background:#b3151c" title="Đỏ"></button>
+            <button class="sw" data-c="transparent" style="background:repeating-conic-gradient(#ddd 0 25%,#fff 0 50%) 0/10px 10px" title="Trong suốt"></button>
+            <input type="color" id="bgColor" value="#f3eee9" title="Chọn màu khác">
+          </div>
+        </div>
+        <div class="field" id="notchField">
+          <label class="row"><input type="checkbox" id="notch" checked> Vẽ tai thỏ (notch)</label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Ảnh nền mẫu</h2>
+        <div class="tpl">
+          <img id="tplThumb" alt="Ảnh màn hình mẫu">
+          <div class="meta" id="tplMeta">Đang tải…</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <label class="btn btn-ghost" style="flex:1">Đổi ảnh mẫu<input id="tplFile" type="file" accept="image/*" hidden></label>
+          <button class="btn btn-ghost" id="tplReset" style="flex:1" disabled>Dùng mặc định</button>
+        </div>
+        <p class="hint">Ảnh mẫu thay thế phải là ảnh chụp màn hình Trang chủ cùng bố cục (cùng dòng máy) thì banner mới khớp vị trí.</p>
+      </div>
+    </aside>
+
+    <main>
+      <div class="results-head">
+        <h2 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)">Kết quả</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" id="clearAll" disabled>Xoá hết</button>
+          <button class="btn btn-red" id="dlAll" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+            Tải tất cả
+          </button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty">
+        <img id="emptyImg" alt="">
+        <div><b style="color:var(--text)">Chưa có banner nào</b><br>Tải ảnh banner lên ở cột bên trái, mockup sẽ hiện ở đây.</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt="Xem lớn"></div>
+
+<script>
+(() => {
+  // Toạ độ đo trên ảnh mẫu 1242×2688 (iPhone @3x). Tự co giãn theo chiều rộng ảnh mẫu.
+  const BASE_W = 1242;
+  const G = {
+    box: { x: 45, y: 1450, w: 1152, h: 522, r: 27 },  // viền xám #efefef bao quanh banner
+    border: 3,
+    imgR: 24,
+    contentEnd: 2409,                                   // mép trên thanh tab dưới (phần cố định)
+    borderColor: '#efefef'
+  };
+  const DEFAULT_TPL = 'template-home.png';
+
+  const state = {
+    fit: 'auto', style: 'frame', bg: '#f3eee9', notch: true,
+    tpl: null, tplIsDefault: true,
+    items: []   // { id, name, img, url, blob }
+  };
+
+  const $ = s => document.querySelector(s);
+  const grid = $('#grid'), empty = $('#empty');
+
+  // ---------- helpers ----------
+  const loadImage = src => new Promise((res, rej) => {
+    const im = new Image();
+    im.onload = () => res(im);
+    im.onerror = () => rej(new Error('Không đọc được ảnh'));
+    im.src = src;
+  });
+  const fileToImage = file => loadImage(URL.createObjectURL(file));
+
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawCover(ctx, img, dx, dy, dw, dh) {
+    const s = Math.max(dw / img.naturalWidth, dh / img.naturalHeight);
+    const sw = dw / s, sh = dh / s;
+    const sx = (img.naturalWidth - sw) / 2, sy = (img.naturalHeight - sh) / 2;
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+  }
+
+  function showError(msg) {
+    const e = $('#err');
+    e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+  }
+
+  // ---------- compositing ----------
+  function renderScreen(tpl, banner, fit) {
+    const W = tpl.naturalWidth, H = tpl.naturalHeight, k = W / BASE_W;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(tpl, 0, 0);
+
+    const b = G.border * k;
+    const box = { x: G.box.x * k, y: G.box.y * k, w: G.box.w * k, h: G.box.h * k };
+    const innerW = box.w - 2 * b, oldInnerH = box.h - 2 * b;
+    const contentEnd = G.contentEnd * k;
+    const boxBottom = box.y + box.h;
+
+    let innerH = oldInnerH;
+    if (fit === 'auto') {
+      innerH = innerW * banner.naturalHeight / banner.naturalWidth;
+      innerH = Math.min(innerH, contentEnd - box.y - 2 * b - 20 * k);  // không vượt quá màn hình
+    }
+    innerH = Math.round(innerH);
+    const d = innerH - oldInnerH;
+
+    // Xoá banner cũ (và đẩy nội dung bên dưới nếu chiều cao thay đổi)
+    ctx.fillStyle = '#ffffff';
+    if (Math.abs(d) >= 1) {
+      ctx.fillRect(0, box.y - 2, W, contentEnd - box.y + 2);
+      ctx.save();
+      ctx.beginPath(); ctx.rect(0, box.y, W, contentEnd - box.y); ctx.clip();
+      const srcH = contentEnd - boxBottom;
+      ctx.drawImage(tpl, 0, boxBottom, W, srcH, 0, boxBottom + d, W, srcH);
+      ctx.restore();
+      // Vẽ lại thanh tab cố định ở dưới
+      ctx.drawImage(tpl, 0, contentEnd, W, H - contentEnd, 0, contentEnd, W, H - contentEnd);
+    } else {
+      ctx.fillRect(box.x - 2, box.y - 2, box.w + 4, box.h + 4);
+    }
+
+    // Viền + banner mới
+    const r = G.box.r * k, ir = G.imgR * k;
+    ctx.fillStyle = G.borderColor;
+    rr(ctx, box.x, box.y, box.w, innerH + 2 * b, r); ctx.fill();
+    ctx.save();
+    rr(ctx, box.x + b, box.y + b, innerW, innerH, ir); ctx.clip();
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(box.x + b, box.y + b, innerW, innerH);
+    drawCover(ctx, banner, box.x + b, box.y + b, innerW, innerH);
+    ctx.restore();
+    return c;
+  }
+
+  function renderFrame(screen, bg, notch) {
+    const W = screen.width, H = screen.height, k = W / BASE_W;
+    const bezel = Math.round(46 * k), pad = Math.round(150 * k);
+    const screenR = 150 * k, bodyR = screenR + bezel;
+    const c = document.createElement('canvas');
+    c.width = W + 2 * (bezel + pad); c.height = H + 2 * (bezel + pad);
+    const ctx = c.getContext('2d');
+
+    if (bg !== 'transparent') { ctx.fillStyle = bg; ctx.fillRect(0, 0, c.width, c.height); }
+
+    const bx = pad, by = pad, bw = W + 2 * bezel, bh = H + 2 * bezel;
+    // Nút bấm cạnh máy
+    ctx.fillStyle = '#2a2a2e';
+    const btn = (x, y, w, h) => { rr(ctx, x, y, w, h, Math.min(w, h) / 2); ctx.fill(); };
+    btn(bx - 9 * k, by + 330 * k, 14 * k, 110 * k);
+    btn(bx - 9 * k, by + 520 * k, 14 * k, 200 * k);
+    btn(bx - 9 * k, by + 760 * k, 14 * k, 200 * k);
+    btn(bx + bw - 5 * k, by + 600 * k, 14 * k, 300 * k);
+
+    // Thân máy + bóng đổ
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.28)'; ctx.shadowBlur = 90 * k; ctx.shadowOffsetY = 40 * k;
+    ctx.fillStyle = '#111113';
+    rr(ctx, bx, by, bw, bh, bodyR); ctx.fill();
+    ctx.restore();
+    // Viền kim loại
+    ctx.lineWidth = 6 * k; ctx.strokeStyle = '#3b3b40';
+    rr(ctx, bx + 3 * k, by + 3 * k, bw - 6 * k, bh - 6 * k, bodyR - 3 * k); ctx.stroke();
+
+    // Màn hình
+    const sx = bx + bezel, sy = by + bezel;
+    ctx.save();
+    rr(ctx, sx, sy, W, H, screenR); ctx.clip();
+    ctx.drawImage(screen, sx, sy);
+    if (notch) {
+      const nw = 630 * k, nh = 92 * k, nx = sx + (W - nw) / 2, top = sy - 2;
+      const cr = 26 * k, er = 18 * k;  // bo góc dưới, bo tai nối viền
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.moveTo(nx - er, top);
+      ctx.lineTo(nx + nw + er, top);
+      ctx.arcTo(nx + nw, top, nx + nw, top + er, er);
+      ctx.lineTo(nx + nw, top + nh - cr);
+      ctx.arcTo(nx + nw, top + nh, nx + nw - cr, top + nh, cr);
+      ctx.lineTo(nx + cr, top + nh);
+      ctx.arcTo(nx, top + nh, nx, top + nh - cr, cr);
+      ctx.lineTo(nx, top + er);
+      ctx.arcTo(nx, top, nx - er, top, er);
+      ctx.closePath(); ctx.fill();
+      // loa + camera
+      ctx.fillStyle = '#1c1c20';
+      rr(ctx, sx + W / 2 - 75 * k, top + 26 * k, 150 * k, 16 * k, 8 * k); ctx.fill();
+      ctx.fillStyle = '#14161f';
+      ctx.beginPath(); ctx.arc(sx + W / 2 + 140 * k, top + 34 * k, 17 * k, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+    return c;
+  }
+
+  const toBlob = c => new Promise((res, rej) => {
+    try { c.toBlob(b => b ? res(b) : rej(new Error('toBlob')), 'image/png'); }
+    catch (e) { rej(e); }
+  });
+
+  async function renderItem(item) {
+    const screen = renderScreen(state.tpl, item.img, state.fit);
+    const out = state.style === 'frame' ? renderFrame(screen, state.bg, state.notch) : screen;
+    const blob = await toBlob(out);
+    if (item.url) URL.revokeObjectURL(item.url);
+    item.blob = blob; item.url = URL.createObjectURL(blob);
+  }
+
+  // ---------- UI ----------
+  function outName(item) {
+    const base = item.name.replace(/\.[^.]+$/, '') || 'banner';
+    return `mockup-${base}${state.style === 'frame' ? '-khung' : ''}.png`;
+  }
+
+  function download(item) {
+    const a = document.createElement('a');
+    a.href = item.url; a.download = outName(item);
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function paint() {
+    grid.innerHTML = '';
+    empty.style.display = state.items.length ? 'none' : 'block';
+    $('#dlAll').disabled = $('#clearAll').disabled = !state.items.length;
+    for (const item of state.items) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="shot"><img alt="Mockup"></div>
+        <div class="foot">
+          <span class="name"></span>
+          <span class="actions">
+            <button class="icon-btn" data-a="rm" title="Xoá"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <button class="icon-btn" data-a="dl" title="Tải PNG" style="background:var(--red);color:#fff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></button>
+          </span>
+        </div>`;
+      card.querySelector('img').src = item.url;
+      card.querySelector('.name').textContent = item.name;
+      card.querySelector('img').onclick = () => openLightbox(item.url);
+      card.querySelector('[data-a=dl]').onclick = () => download(item);
+      card.querySelector('[data-a=rm]').onclick = () => {
+        state.items = state.items.filter(i => i !== item);
+        URL.revokeObjectURL(item.url); paint();
+      };
+      grid.appendChild(card);
+    }
+  }
+
+  async function rerenderAll() {
+    if (!state.tpl) return;
+    try {
+      for (const item of state.items) await renderItem(item);
+      showError('');
+    } catch (e) { handleRenderError(e); }
+    paint();
+  }
+
+  function handleRenderError(e) {
+    console.error(e);
+    if (e && e.name === 'SecurityError') {
+      showError('Trình duyệt chặn xuất ảnh khi mở file trực tiếp (file://). Hãy mở trang qua máy chủ web (vd: python3 -m http.server) hoặc GitHub Pages — hoặc bấm “Đổi ảnh mẫu” và chọn lại file template-home.png.');
+    } else {
+      showError('Có lỗi khi tạo mockup: ' + (e && e.message || e));
+    }
+  }
+
+  async function addFiles(files) {
+    const list = [...files].filter(f => f.type.startsWith('image/'));
+    if (!list.length) return;
+    if (!state.tpl) { showError('Ảnh mẫu chưa tải xong, thử lại sau giây lát.'); return; }
+    for (const f of list) {
+      try {
+        const img = await fileToImage(f);
+        const item = { id: Math.random().toString(36).slice(2), name: f.name || 'banner.png', img };
+        await renderItem(item);
+        state.items.unshift(item);
+        showError('');
+      } catch (e) { handleRenderError(e); }
+    }
+    paint();
+  }
+
+  function updateFitHint() {
+    $('#fitHint').textContent = state.fit === 'auto'
+      ? 'Banner giữ nguyên tỉ lệ, rộng hết khung; nội dung bên dưới tự dịch lên/xuống như trong ứng dụng.'
+      : 'Banner được cắt cho vừa đúng khung banner cũ (tỉ lệ ≈ 2,22 : 1), không dịch chuyển nội dung khác.';
+  }
+
+  function updateStyleFields() {
+    const f = state.style === 'frame';
+    $('#bgField').style.display = f ? '' : 'none';
+    $('#notchField').style.display = f ? '' : 'none';
+  }
+
+  // Segmented controls
+  document.querySelectorAll('.seg').forEach(seg => {
+    seg.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+      state[seg.dataset.opt] = b.dataset.v;
+      updateFitHint(); updateStyleFields(); rerenderAll();
+    });
+  });
+
+  // Background swatches
+  const setBg = c => {
+    state.bg = c;
+    document.querySelectorAll('.sw').forEach(s => s.classList.toggle('on', s.dataset.c === c));
+    rerenderAll();
+  };
+  document.querySelectorAll('.sw').forEach(s => s.onclick = () => setBg(s.dataset.c));
+  $('#bgColor').addEventListener('input', e => setBg(e.target.value));
+  $('#notch').addEventListener('change', e => { state.notch = e.target.checked; rerenderAll(); });
+
+  // Upload: click / drag-drop / paste
+  const drop = $('#drop'), fileIn = $('#file');
+  fileIn.addEventListener('change', () => { addFiles(fileIn.files); fileIn.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => document.addEventListener(ev, e => {
+    e.preventDefault();
+    if (ev === 'drop' || e.target === document.documentElement) drop.classList.remove('over');
+  }));
+  document.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+  document.addEventListener('paste', e => {
+    const files = [...(e.clipboardData?.items || [])].filter(i => i.kind === 'file').map(i => i.getAsFile()).filter(Boolean);
+    addFiles(files);
+  });
+
+  $('#dlAll').onclick = async () => {
+    for (const item of state.items) { download(item); await new Promise(r => setTimeout(r, 350)); }
+  };
+  $('#clearAll').onclick = () => {
+    state.items.forEach(i => URL.revokeObjectURL(i.url));
+    state.items = []; paint();
+  };
+
+  // Lightbox
+  const lb = $('#lightbox');
+  function openLightbox(url) { lb.querySelector('img').src = url; lb.classList.add('on'); }
+  lb.onclick = () => lb.classList.remove('on');
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('on'); });
+
+  // Template
+  async function setTemplate(src, isDefault) {
+    try {
+      state.tpl = await loadImage(src);
+      state.tplIsDefault = isDefault;
+      $('#tplThumb').src = src; $('#emptyImg').src = src;
+      const t = state.tpl;
+      const ratioOk = Math.abs(t.naturalHeight / t.naturalWidth - 2688 / 1242) < 0.02;
+      $('#tplMeta').innerHTML = `${isDefault ? 'Mặc định — Trang chủ' : 'Ảnh mẫu tuỳ chỉnh'}<br>${t.naturalWidth} × ${t.naturalHeight}px` +
+        (ratioOk ? '' : '<br><span style="color:#b45309">⚠ Tỉ lệ khác ảnh mặc định, banner có thể lệch.</span>');
+      $('#tplReset').disabled = isDefault;
+      await rerenderAll();
+    } catch (e) {
+      showError('Không tải được ảnh mẫu “' + DEFAULT_TPL + '”. Hãy bấm “Đổi ảnh mẫu” để chọn ảnh chụp màn hình Trang chủ.');
+      $('#tplMeta').textContent = 'Chưa có ảnh mẫu';
+    }
+  }
+  $('#tplFile').addEventListener('change', e => {
+    const f = e.target.files[0]; if (f) setTemplate(URL.createObjectURL(f), false);
+    e.target.value = '';
+  });
+  $('#tplReset').onclick = () => setTemplate(DEFAULT_TPL, true);
+
+  updateFitHint(); updateStyleFields(); paint();
+  setTemplate(DEFAULT_TPL, true);
+})();
+</script>
+</body>
+</html>
