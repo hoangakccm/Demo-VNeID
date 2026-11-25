@@ -33,7 +33,7 @@ Mở `mockup/index.html` (qua máy chủ web hoặc GitHub Pages, ví dụ `http
 Tuỳ chọn:
 - **Giữ tỉ lệ ảnh**: banner rộng hết khung, giữ nguyên tỉ lệ; nội dung bên dưới tự dịch như trong ứng dụng
 - **Lấp đầy khung**: cắt banner cho vừa đúng khung cũ (≈ 2,22 : 1, tức 1146 × 516 px @3x)
-- **Khung điện thoại** (có màu nền, tai thỏ) hoặc **Ảnh màn hình** gốc 1242 × 2688
+- **Ảnh gốc** (mặc định): giữ nguyên ảnh chụp màn hình mẫu 1242 × 2688, chỉ thay vùng banner; tuỳ chọn **Thêm khung máy** nếu cần
 - **Đổi ảnh mẫu**: dùng ảnh chụp Trang chủ khác cùng bố cục
 
 Mọi xử lý chạy trong trình duyệt, ảnh không được gửi đi đâu.

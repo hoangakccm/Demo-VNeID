@@ -127,9 +127,10 @@
         <div class="field">
           <label>Kiểu xuất</label>
           <div class="seg" data-opt="style">
-            <button data-v="frame" class="on">Khung điện thoại</button>
-            <button data-v="screen">Ảnh màn hình</button>
+            <button data-v="screen" class="on">Ảnh gốc</button>
+            <button data-v="frame">Thêm khung máy</button>
           </div>
+          <p class="hint">“Ảnh gốc”: giữ nguyên ảnh chụp màn hình mẫu (1242 × 2688), chỉ thay đúng vùng banner bằng ảnh bạn tải lên.</p>
         </div>
         <div class="field" id="bgField">
           <label>Màu nền</label>
@@ -197,7 +198,7 @@
   const DEFAULT_TPL = 'template-home.png';
 
   const state = {
-    fit: 'auto', style: 'frame', bg: '#f3eee9', notch: true,
+    fit: 'auto', style: 'screen', bg: '#f3eee9', notch: true,
     tpl: null, tplIsDefault: true,
     items: []   // { id, name, img, url, blob }
   };
