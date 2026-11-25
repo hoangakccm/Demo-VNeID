@@ -1,5 +1,5 @@
 // Service worker: cache app shell so the app opens offline after first visit.
-const CACHE = 'vneid-demo-v2';
+const CACHE = 'vneid-demo-v3';
 const ASSETS = [
   './', './index.html', './styles.css', './app.js', './config.js',
   './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png',
